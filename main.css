@@ -1,0 +1,56 @@
+.container{
+    margin-top:100px;
+}
+
+.nav-tabs li, label, .btn{
+    text-transform: uppercase;
+}
+
+.nav-tabs{
+    border-bottom-color: transparent;
+}
+
+input, select{
+    margin-bottom: 10px;
+}
+
+
+.nav-tabs.nav-stacked li{
+    margin-top: 0;
+}
+
+.nav-tabs.nav-stacked li a{
+    border-radius: 4px 0 0 4px;
+    border-color: transparent;
+    border-right: 1px solid #ddd;
+}
+
+.nav-tabs.nav-stacked li.active a{
+    border: 1px solid #ddd;
+    border-right-color: transparent;
+}
+
+a.btn{
+    text-decoration: underline;
+}
+
+i{
+    margin-right:10px;
+}
+
+ul.unmarked{
+    list-style-type: none;
+}
+
+.datepicker{
+    top: 60px !important;
+    left: 15px !important;
+}
+
+.checkboxOffset{
+    margin-top: 30px;
+}
+
+.width70{
+    width:70% !important;
+}
