@@ -1,0 +1,23 @@
+{
+  "name": "SPAexercise",
+  "version": "0.0.0",
+  "authors": [
+    "dmitry-cherniavsky <darkmin9@gmail.com>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "homepage": "index.html",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.5",
+    "bootstrap": "~3.3.5",
+    "bootstrap-datepicker": "~1.4.0",
+    "font-awesome": "~4.4.0"
+  }
+}
