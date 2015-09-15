@@ -38,6 +38,8 @@
                     pastQuery.option2 = this.query.carType;
                     break;
             }
+            
+            //MV1: I believe this should de-duplicate searches, but it doesn't. Why?
             if(JSON.stringify(this.history[0]) != JSON.stringify(pastQuery)) {
                 this.history.unshift(pastQuery);
             }
@@ -45,6 +47,7 @@
 
         this.resetQuery = function(){
             var currentType = this.query.type;
+            //MV2: Does this look familiar?
             this.query = {
                 type: currentType,
                 hotelAmenities: {stars: "3"},
@@ -53,6 +56,7 @@
         };
 
         this.removeQueryFromHistory = function(item) {
+            //MV3: How would you avoid an index lookup?
             var index = this.history.indexOf(item);
             this.history.splice(index, 1);
         }
