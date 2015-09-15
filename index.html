@@ -13,29 +13,21 @@
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="main.css"/>
 </head>
-<body ng-controller="SearchController as search">
-<div id="bookingRoot" ng-controller="TabController as tab" class="container">
+<body ng-controller="SearchController as search" ng-init="search.initQuery()">
+<div id="bookingRoot" ng-controller="TabController as tabCtrl" ng-init="tabCtrl.current = 0" class="container">
     <div class="row">
         <!--Tabs-->
-            <div class="col-xs-4 col-md-2">
-                <ul class="nav nav-tabs nav-stacked">
-                    <li ng-class="{active: tab.isSet(1)}">
-                        <a href="#" ng-click="tab.setTab(1); search.query.type = 'flight'">
-                            <i class="fa fa-plane"></i> Flights
-                        </a>
-                    </li>
-                    <li ng-class="{active: tab.isSet(2)}">
-                        <a href="#" ng-click="tab.setTab(2); search.query.type = 'hotel'">
-                            <i class="fa fa-bed"></i> Hotels
-                        </a>
-                    </li>
-                    <li ng-class="{active: tab.isSet(3)}">
-                        <a href="#" ng-click="tab.setTab(3); search.query.type = 'car'">
-                            <i class="fa fa-car"></i> Cars
-                        </a>
-                    </li>
-                </ul>
-            </div>
+        <div class="col-xs-4 col-md-2">
+            <ul class="nav nav-tabs nav-stacked">
+                <!--MV1: How would you DRY this up?-->
+                <!--Answer: Create array with tabs objects and use ng-repeat-->
+                <li ng-repeat="tab in tabCtrl.tabs" ng-class="{active: tabCtrl.isSet($index)}">
+                    <a href="#" ng-click="tabCtrl.setTab($index); search.query.type = tab.searchType">
+                        <i class="fa fa-{{icons[tab.searchType]}}"></i> {{tab.title}}
+                    </a>
+                </li>
+            </ul>
+        </div>
         <!--Tabs Content-->
         <form ng-submit="search.newSearch()">
             <div class="tab-content col-xs-6 col-md-6">
@@ -53,49 +45,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group" ng-show="tab.isSet(1)">
-                    <label>From</label>
-                    <input type="text" class="form-control" ng-model="search.query.flightFrom" placeholder="" ng-required="tab.isSet(1)">
-                    <label>To</label>
-                    <input type="text" class="form-control" ng-model="search.query.flightTo" placeholder="" ng-required="tab.isSet(1)">
-                </div>
-                <div class="form-group" ng-show="tab.isSet(2)">
-                    <div class="row">
-                        <div class="col-xs-6 col-md-6">
-                            <label>Amenities</label>
-                            <select class="form-control" ng-model="search.query.hotelAmenities.stars">
-                                <option value="5">★★★★★</option>
-                                <option value="4">★★★★</option>
-                                <option value="3">★★★</option>
-                                <option value="2">★★</option>
-                                <option value="1">★</option>
-                            </select>
-                        </div>
-                        <div class="col-xs-6 col-md-6 checkboxOffset">
-                            <label class="text-capitalize">
-                                <input type="checkbox" ng-model="search.query.hotelAmenities.higherAllowed">
-                                and higher
-                            </label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 col-md-12">
-                            <label for="inputStartDate">Location</label>
-                            <input type="text" class="form-control" ng-model="search.query.hotelLocation" placeholder=""  ng-required="tab.isSet(2)">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group" ng-show="tab.isSet(3)">
-                    <label>Type</label>
-                    <select class="form-control" ng-model="search.query.carType">
-                        <option value="economy">Economy</option>
-                        <option value="compact">Compact</option>
-                        <option value="standard">Standard</option>
-                        <option value="premium">Premium</option>
-                        <option value="luxury">Luxury</option>
-                    </select>
-                    <label>Location</label>
-                    <input type="text" class="form-control" ng-model="search.query.carLocation" placeholder=""  ng-required="tab.isSet(3)">
+                <!--MV2: How would your approach change if there were more tabs / tab-specific fields? -->
+                <!--Answer: We need to implement more scalable approach like this -->
+                <div class="form-group" ng-repeat="tab in tabCtrl.tabs" ng-show="tabCtrl.isSet($index)">
+                    <ng-include src="tab.contentUrl"></ng-include>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-default pull-right">Search</button>
@@ -107,9 +60,11 @@
     <hr/>
     <div class="row width70" ng-show="search.history.length">
         <h4>Previous searches</h4>
-            <div class='row' ng-repeat="pastQuery in search.history">
+            <div class='row' ng-repeat="pastQuery in search.history track by $index">
                 <div class="col-xs-1 col-md-1">
-                    <i ng-class="{fa: true, 'fa-plane': pastQuery.type === 'flight', 'fa-bed': pastQuery.type === 'hotel', 'fa-car': pastQuery.type === 'car' }"></i>
+                    <!--MV3: How would your approach change if there were more tabs? -->
+                    <!--Answer: We can use constant object with icons name for each type/tab-->
+                    <i class="fa fa-{{icons[pastQuery.type]}}"></i>
                 </div>
                 <div class="col-xs-4 col-md-4">
                     {{pastQuery.dates}}
@@ -121,7 +76,7 @@
                     {{pastQuery.option2}}
                 </div>
                 <div class="col-xs-1 col-md-1">
-                    <a href="#" ng-click="search.removeQueryFromHistory(pastQuery)"><i class="fa fa-times"></i></a>
+                    <a href="#" ng-click="search.removeQueryFromHistory($index)"><i class="fa fa-times"></i></a>
                 </div>
             </div>
     </div>

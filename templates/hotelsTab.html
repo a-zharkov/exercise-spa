@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-xs-6 col-md-6">
+        <label>Amenities</label>
+        <select class="form-control" ng-model="search.query.hotelAmenities.stars">
+            <option value="5">★★★★★</option>
+            <option value="4">★★★★</option>
+            <option value="3">★★★</option>
+            <option value="2">★★</option>
+            <option value="1">★</option>
+        </select>
+    </div>
+    <div class="col-xs-6 col-md-6 checkboxOffset">
+        <label class="text-capitalize">
+            <input type="checkbox" ng-model="search.query.hotelAmenities.higherAllowed">
+            and higher
+        </label>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <label>Location</label>
+        <input type="text" class="form-control" ng-model="search.query.hotelLocation" placeholder=""  ng-required="tabCtrl.isSet($index)">
+    </div>
+</div>
